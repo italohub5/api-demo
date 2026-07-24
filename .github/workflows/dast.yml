@@ -1,0 +1,31 @@
+name: DAST (OWASP ZAP)
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  zap-scan:
+    name: OWASP ZAP Dynamic Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Construir y levantar la API en background
+        run: |
+          docker build -t api-demo-dast .
+          docker run -d -p 8080:8080 --name api-dast-container api-demo-dast
+          sleep 15 # Esperar a que la API inicie correctamente
+
+      - name: Ejecutar OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: 'http://localhost:8080/api/users?username=admin'
+          format: 'sarif'
+          fail_action: 'false' # Lo dejamos en false inicialmente para evaluación
+
+      - name: Apagar contenedor
+        if: always()
+        run: docker stop api-dast-container
