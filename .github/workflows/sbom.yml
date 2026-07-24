@@ -2,8 +2,9 @@ name: SBOM Generation (Syft)
 
 on:
   push:
+    branches: [ "main", "feature/controles-seguridad" ]
+  pull_request:
     branches: [ "main" ]
-
 jobs:
   generate-sbom:
     name: Generate Software Bill of Materials
