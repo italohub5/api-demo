@@ -1,0 +1,23 @@
+name: Gitleaks Secret Scanning
+
+on:
+  push:
+    branches: [ "main", "feature/controles-seguridad" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  scan:
+    name: Scan for Secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Necesario para que Gitleaks revise todo el historial
+
+      - name: Ejecutar Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Si Gitleaks encuentra el secreto, arrojará un "exit code 1" y romperá el pipeline.
