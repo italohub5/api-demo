@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "daily" # Lo ponemos diario para que actúe rápido en la prueba
+    open-pull-requests-limit: 5
+    
+    # ESTRATEGIA DE PRIORIZACIÓN:
+    # Le decimos a Dependabot que ignore actualizaciones menores (parches) 
+    # si no son de seguridad, para enfocar el esfuerzo del equipo en lo crítico.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]

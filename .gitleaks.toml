@@ -1,0 +1,7 @@
+title = "Reglas Personalizadas de Seguridad"
+
+[[rules]]
+id = "pdtech-custom-key"
+description = "Detecta la publicacion accidental de llaves pdtech_key"
+regex = '''pdtech_key_[a-zA-Z0-9]{5,}'''
+tags = ["secret", "pago-directo"]
